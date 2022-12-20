@@ -127,6 +127,41 @@ def depthFirstSearch(problem):
 
     util.raiseNotDefined()
 
+def breadthFirstSearch(problem):
+    """Search the shallowest sns in the search tree first."""
+    "*** YOUR CODE HERE ***"
+    #In bfs, there is queue used to store where set and array is used for storing visited nodes and path. Depending upon that it check
+    # all the the condition first and then depends upon condition it returns or add the new path till it reaches the goal stage.
+
+    F =util.Queue()
+    v =set()  #a collection of visited nodes
+    current =[] #here, store the search route from the start node to the destination.
+    sn=problem.getStartState()
+    F.push((sn,current))  # Add the route and the node to the queue.
+
+    flag = True
+    while flag:
+        if F.isEmpty():
+            return []
+        # When I remove a queue item, I take the node and add it to the visited set.
+        sn,current =F.pop()
+        v .add(sn)
+        if problem.isGoalState(sn): # if the goal reached, return the search path
+            return current
+        s=problem.getSuccessors(sn) #take the successors of the current node/state
+         # i[0]:next_state  i[1]:action  i[2]:cost 
+        for i in s: # verify that the successor/child has not been visited and is not in Queue
+            cs = i[0]
+            if cs not in v  and cs not in (abc[0] for abc in F.list):
+                nw=list(current)  #copy the previous path list into the new one.
+                path = i[1]
+                nw.append(path) 
+                F.push((cs,nw))   # Insert the path and node onto the Queue.
+    
+
+    util.raiseNotDefined()
+
+
 def nullHeuristic(state, problem=None):
     """
     A heuristic function estimates the cost from the current state to the nearest
