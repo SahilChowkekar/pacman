@@ -171,3 +171,4 @@ def nullHeuristic(state, problem=None):
 
 # Abbreviations
 dfs = depthFirstSearch()
+bfs = breadthFirstSearch()
