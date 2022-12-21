@@ -161,6 +161,49 @@ def breadthFirstSearch(problem):
 
     util.raiseNotDefined()
 
+def uniformCostSearch(problem):
+    """Search the sn of least total cost first."""
+    "*** YOUR CODE HERE ***"
+     # In uniform cost search, there is priority queue used to store where set and array is used for storing visited nodes and path.
+     # Depending upon that it check all the the condition first and then depends upon condition like priority queue empty or not,
+     # reaches goal stages and check succesor is current or not, depending on it uses priority queue for adding the new path bases on
+     #  using priority in uniform cost search till it reaches the goal stage.
+
+    F=util.PriorityQueue() 
+    v =set() #a collection of visited nodes
+    current =[] #here, store the search route from the start node to the destination.
+    sn=problem.getStartState()
+
+    F.push([sn,current],problem.getCostOfActions(current )) 
+    while True:
+        if F.isEmpty():
+            return []
+
+        # when I pop one item from the Priority Queue, I take the node and I add this in to the visited set
+        sn,current =F.pop()
+        v .add(sn)
+        if problem.isGoalState(sn): # if the goal reached, return the search path
+            return current 
+        s=problem.getSuccessors(sn) #take the successors of the current node/state
+        
+        for i in s:  # i[0]:next_state  i[1]:action  i[2]:cost 
+            cs = i[0]
+            if cs not in v  and cs not in (abc[2][0] for abc in F.heap): # Verify that the successor/child hasn't been visited and isn't on the priority queue. 
+                nw=list(current)  #copy the previous path list into the new one.
+                path = i[1]
+                nw.append(path) #the new path list should include the new route. 
+                F.push([cs,nw],problem.getCostOfActions(nw)) # push the node, the path in to the Priority Queue and as priority, set the path cost
+            elif cs not in v  and cs in (abc[2][0] for abc in F.heap): # check if the successor/child is not visited and is in Priority Queue
+                nw=list(current) #copy the previous path list into the new one.
+                path = i[1]
+                nw.append(path) #the new path list should include the new route.
+                for abc in F.heap:
+                    if abc[2][0]==cs and abc[0]>problem.getCostOfActions(nw): # Verify if the child or successor is already in the priority queue.
+                        abc[2][1]=nw  # check if the "new_path cost" (priority) is less than the item's cost in the PriorityQueue                                       
+                        F.update([cs,nw],problem.getCostOfActions(nw)) # If True, then update the path and the path cost of this item in PriorityQueue
+                                                                         # (path cost is the priority for the Priority Queue)
+    util.raiseNotDefined()
+
 
 def nullHeuristic(state, problem=None):
     """
@@ -171,3 +214,5 @@ def nullHeuristic(state, problem=None):
 
 # Abbreviations
 dfs = depthFirstSearch()
+bfs = breadthFirstSearch()
+ucs = uniformCostSearch()
