@@ -214,5 +214,9 @@ def nullHeuristic(state, problem=None):
 
 # Abbreviations
 dfs = depthFirstSearch()
+<<<<<<< HEAD
 bfs = breadthFirstSearch()
 ucs = uniformCostSearch()
+=======
+bfs = breadthFirstSearch()
+>>>>>>> master
