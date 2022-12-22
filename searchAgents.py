@@ -495,6 +495,23 @@ def foodHeuristic(state, problem):
     """
     position, foodGrid = state
     "*** YOUR CODE HERE ***"
+     #fi is food item i.e food list, fd is food distance, d is distance
+    fl=foodGrid.asList()
+    if len(fl)==0:  # If there is no food remaining, return 0.
+        return 0
+
+    fd=[] # list to keep track of distances
+    max_distance=0
+
+    # Heuristicinfo is utilized to save data for reuse in subsequent calls to prevent needless calculations.
+    for f in fl:  # tally up each distance from your present location to each food.
+        try: # Check/Try to See If The d Is In The Dictionary
+            d=problem.heuristicInfo[(position,f)]
+            fd.append(d) # to the list, add the d
+        except:  # The mazeDistance function is used to calculate this because it is not in the dictionary.
+            d=mazeDistance(position,f,problem.startingGameState)
+            problem.heuristicInfo[(position,f)]=d # the dictionary should now include the new d from present position to food.
+            fd.append(d) # to the list, add the d
 
 class ClosestDotSearchAgent(SearchAgent):
     "Search for all food using a sequence of searches"
