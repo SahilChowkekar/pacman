@@ -542,6 +542,8 @@ class ClosestDotSearchAgent(SearchAgent):
         problem = AnyFoodSearchProblem(gameState)
 
         "*** YOUR CODE HERE ***"
+        return search.uniformCostSearch(problem)  #In search.py, uniformCostSearch has already been implemented.
+        util.raiseNotDefined()
 
 class AnyFoodSearchProblem(PositionSearchProblem):
     """
