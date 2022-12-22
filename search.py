@@ -212,7 +212,45 @@ def nullHeuristic(state, problem=None):
     """
     return 0
 
+def aStarSearch(problem, heuristic=nullHeuristic):
+    """Search the sn that has the lowest combined cost and heuristic first."""
+    "*** YOUR CODE HERE ***"
+
+    # In A* search, we have use priority queue,set and arrary to store visited nodes and path, where in total we get starting node to n node
+    # plus the heuristic cost from node to goal stage.
+    F=util.PriorityQueue()
+    v =set() #a collection of visited nodes
+    current=[]  #here, store the search route from the start node to the destination.
+    sn=problem.getStartState()
+    total=problem.getCostOfActions(current)+heuristic(sn,problem) # f(n)= g(n) + h(n)
+                                                                  # g(n): cost from start node to "n" node
+                                                                  # h(n): heuristic cost estimation from a node to a goal
+    F.push((sn,current),total)
+
+    while True:
+        if F.isEmpty():
+            return []
+        sn,current=F.pop()
+        if sn in v:  # if this node is already visited, continue
+            continue   # avoid to add multiple times the same node in to the PriorityQueue 
+        v.add(sn)
+        # when I pop one item from the Priority Queue, I take the node and I add this in to the visited set
+        if problem.isGoalState(sn):
+            return current
+        s=problem.getSuccessors(sn)  #take the successors of the current node/state
+        for i in s:
+            cs = i[0]
+            if cs not in v:  # i[0]:next_state  i[1]:action  i[2]:cost
+                nw=list(current)  #copy the previous path list into the new one.
+                path = i[1]
+                nw.append(path) 
+                total=problem.getCostOfActions(nw)+heuristic(cs,problem) # f(n)= g(n) + h(n)
+                F.push((cs,nw),total) # push the node, the path in to the Priority Queue and as priority, set the value of f(n)
+
+    util.raiseNotDefined()
+
 # Abbreviations
-dfs = depthFirstSearch()
-bfs = breadthFirstSearch()
-ucs = uniformCostSearch()
+bfs = breadthFirstSearch
+dfs = depthFirstSearch
+astar = aStarSearch
+ucs = uniformCostSearch
