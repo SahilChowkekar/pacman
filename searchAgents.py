@@ -289,18 +289,27 @@ class CornersProblem(search.SearchProblem):
         # Please add any code here which you would like to use
         # in initializing the problem
 
+        "*** YOUR CODE HERE ***"
+       
+        self.visited=() # The visited corners are kept here
+        self.startState=(self.startingPosition,self.visited) # tuple with startingPosition and visited corners
+
     def getStartState(self):
         """
         Returns the start state (in your state space, not the full Pacman state
         space)
         """
         "*** YOUR CODE HERE ***"
+        return self.startingPosition,self.visited # return the startstate  
+        util.raiseNotDefined()
 
     def isGoalState(self, state):
         """
         Returns whether this search state is a goal state of the problem.
         """
         "*** YOUR CODE HERE ***"
+        return len(state[1])==4 # Return True if the visited corners are 4 (a goal condition), else False.
+        util.raiseNotDefined()
 
     def getSuccessors(self, state):
         """
@@ -323,6 +332,21 @@ class CornersProblem(search.SearchProblem):
             #   hitsWall = self.walls[nextx][nexty]
 
             "*** YOUR CODE HERE ***"
+            #a is visted, c is corner
+            x,y = state[0] # coordinates  
+            a=list(state[1]) # For the next operations, transform the tuple to a new list.  
+            dx,dy = Actions.directionToVector(action)
+            nextx, nexty = int(x + dx), int(y + dy) # next stage
+            c= nextx,nexty                                           
+            hitsWall = self.walls[nextx][nexty]
+            if not hitsWall:
+                if (c) in self.corners: # self.corners is a nested tuple holding the coordinates of the corners in ((x1,y1),...,(x4,y4))
+                                         #  that can be used to determine if the next move is one of the unexplored corners.
+                    if (c) not in a:
+                        a.append((c)) # Yes, the unexplored corner is the next move. Make a note to visit this corner.
+
+                next_state=((c),tuple(a)) # once more convert list to tuple
+                successors.append((next_state,action,1)) # (successor,action,stepCost) , stepCost is 1
 
 
     def getCostOfActions(self, actions):
