@@ -579,6 +579,10 @@ class AnyFoodSearchProblem(PositionSearchProblem):
         x,y = state
 
         "*** YOUR CODE HERE ***"
+        f=self.food.asList()  # a collection of tuples with a list of food coordinates
+
+        return (x,y) in f # If the current state's (x,y) coordinates match the food's coordinates, it returns true (food is the goal)
+        util.raiseNotDefined()
 
 def mazeDistance(point1, point2, gameState):
     """
